@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="main">
+      <UniqueIdentifier>{82b320a4-ef5a-45d9-8ce2-041b759fb013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="header">
+      <UniqueIdentifier>{6b6ba981-706b-4601-84fe-81bc55565453}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gtest">
+      <UniqueIdentifier>{67464df3-00e1-4486-bbb6-82005ff8dead}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="heart">
+      <UniqueIdentifier>{66b3df97-061c-40b2-afe3-50eb7814dfba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="heart\math">
+      <UniqueIdentifier>{60f0147f-0e77-47fe-a45c-fcf94e32a663}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\main.cpp">
+      <Filter>main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\gtest\src\gtest-all.cc">
+      <Filter>gtest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\float2_utest.cpp">
+      <Filter>heart\math</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\header.hpp">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\heart.hpp">
+      <Filter>heart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\math.hpp">
+      <Filter>heart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\math\float2.hpp">
+      <Filter>heart\math</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
