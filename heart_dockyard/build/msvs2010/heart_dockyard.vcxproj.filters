@@ -16,6 +16,9 @@
     <Filter Include="heart\math">
       <UniqueIdentifier>{60f0147f-0e77-47fe-a45c-fcf94e32a663}</UniqueIdentifier>
     </Filter>
+    <Filter Include="heart\collision">
+      <UniqueIdentifier>{3713a16b-e6fd-44f3-997c-57d75ca83cb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\main.cpp">
@@ -25,6 +28,9 @@
       <Filter>gtest</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\float2_utest.cpp">
+      <Filter>heart\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\float3_utest.cpp">
       <Filter>heart\math</Filter>
     </ClCompile>
   </ItemGroup>
@@ -39,6 +45,12 @@
       <Filter>heart</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\heart\math\float2.hpp">
+      <Filter>heart\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\collision.hpp">
+      <Filter>heart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\math\float3.hpp">
       <Filter>heart\math</Filter>
     </ClInclude>
   </ItemGroup>
