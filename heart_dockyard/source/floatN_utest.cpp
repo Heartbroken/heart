@@ -4,6 +4,10 @@
 
 TEST(heart_float2, constructors_work)
 {
+	// Type size is correct
+	{
+		EXPECT_EQ(sizeof(heart::float2), sizeof(float) * 2);
+	}
 	// Default constructor exists
 	{
 		heart::float2 l_v;
@@ -175,6 +179,10 @@ TEST(heart_float2, operators_work)
 
 TEST(heart_float3, constructors_work)
 {
+	// Type size is correct
+	{
+		EXPECT_EQ(sizeof(heart::float3), sizeof(float) * 3);
+	}
 	// Default constructor exists
 	{
 		heart::float3 l_v;
@@ -346,6 +354,10 @@ TEST(heart_float3, operators_work)
 
 TEST(heart_float4, constructors_work)
 {
+	// Type size is correct
+	{
+		EXPECT_EQ(sizeof(heart::float4), sizeof(float) * 4);
+	}
 	// Default constructor exists
 	{
 		heart::float4 l_v;
