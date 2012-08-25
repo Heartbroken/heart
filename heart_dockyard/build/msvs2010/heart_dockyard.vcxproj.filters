@@ -19,6 +19,12 @@
     <Filter Include="heart\collision">
       <UniqueIdentifier>{3713a16b-e6fd-44f3-997c-57d75ca83cb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="heart\simulation">
+      <UniqueIdentifier>{5f32a19c-6359-4d5f-a2f5-edd394ed2ad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="heart\utils">
+      <UniqueIdentifier>{cca9f146-25c0-4a28-b106-925f9cced0b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\main.cpp">
@@ -27,8 +33,14 @@
     <ClCompile Include="..\..\source\gtest\src\gtest-all.cc">
       <Filter>gtest</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\floatN_utest.cpp">
+    <ClCompile Include="..\..\source\realN_utest.cpp">
       <Filter>heart\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\realNxM_utest.cpp">
+      <Filter>heart\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\pool_utest.cpp">
+      <Filter>heart\utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -44,8 +56,29 @@
     <ClInclude Include="..\..\..\heart\collision.hpp">
       <Filter>heart</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\heart\math\floatN.hpp">
+    <ClInclude Include="..\..\..\heart\types.hpp">
+      <Filter>heart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\math\realN.hpp">
       <Filter>heart\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\math\realNxM.hpp">
+      <Filter>heart\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\simulation.hpp">
+      <Filter>heart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\simulation\simulator.hpp">
+      <Filter>heart\simulation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\collision\collider.hpp">
+      <Filter>heart\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\utils.hpp">
+      <Filter>heart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\utils\pool.hpp">
+      <Filter>heart\utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

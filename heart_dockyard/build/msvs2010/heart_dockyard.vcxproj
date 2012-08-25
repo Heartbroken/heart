@@ -80,15 +80,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\source\floatN_utest.cpp" />
+    <ClCompile Include="..\..\source\pool_utest.cpp" />
+    <ClCompile Include="..\..\source\realNxM_utest.cpp" />
+    <ClCompile Include="..\..\source\realN_utest.cpp" />
     <ClCompile Include="..\..\source\gtest\src\gtest-all.cc" />
     <ClCompile Include="..\..\source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\heart\collision.hpp" />
+    <ClInclude Include="..\..\..\heart\collision\collider.hpp" />
     <ClInclude Include="..\..\..\heart\heart.hpp" />
     <ClInclude Include="..\..\..\heart\math.hpp" />
-    <ClInclude Include="..\..\..\heart\math\floatN.hpp" />
+    <ClInclude Include="..\..\..\heart\math\realN.hpp" />
+    <ClInclude Include="..\..\..\heart\math\realNxM.hpp" />
+    <ClInclude Include="..\..\..\heart\simulation.hpp" />
+    <ClInclude Include="..\..\..\heart\simulation\simulator.hpp" />
+    <ClInclude Include="..\..\..\heart\types.hpp" />
+    <ClInclude Include="..\..\..\heart\utils.hpp" />
+    <ClInclude Include="..\..\..\heart\utils\pool.hpp" />
     <ClInclude Include="..\..\source\header.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
