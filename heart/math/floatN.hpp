@@ -109,6 +109,58 @@ namespace heart
 		inline operator float2 () const { return float2(x, y); }
 	};
 
+	struct float4
+	{
+		float x, y, z, w;
+
+		inline float4() {}
+		inline float4(float _x, float _y, float _z, float _w) : x(_x), y(_y), z(_z), w(_w) {}
+		inline float4(const float4 &_v) : x(_v.x), y(_v.y), z(_v.z), w(_v.w) {}
+
+		inline float4& operator = (const float4 &_v) { x = _v.x; y = _v.y; z = _v.z; w = _v.w; return *this; }
+
+		friend inline float4 neg(const float4 &_v) { return float4(-_v.x, -_v.y, -_v.z, -_v.w); }
+
+		friend inline float4 add(const float4 &_a, const float4 &_b) { return float4(_a.x + _b.x, _a.y + _b.y, _a.z + _b.z, _a.w + _b.w); }
+		friend inline float4 sub(const float4 &_a, const float4 &_b) { return float4(_a.x - _b.x, _a.y - _b.y, _a.z - _b.z, _a.w - _b.w); }
+		friend inline float4 mul(const float4 &_a, const float4 &_b) { return float4(_a.x * _b.x, _a.y * _b.y, _a.z * _b.z, _a.w * _b.w); }
+		friend inline float4 div(const float4 &_a, const float4 &_b) { return float4(_a.x / _b.x, _a.y / _b.y, _a.z / _b.z, _a.w / _b.w); }
+
+		friend inline float4 mul(const float4 &_a, float _s) { return float4(_a.x * _s, _a.y * _s, _a.z * _s, _a.w * _s); }
+		friend inline float4 mul(float _s, const float4 &_b) { return float4(_s * _b.x, _s * _b.y, _s * _b.z, _s * _b.w); }
+		friend inline float4 div(const float4 &_a, float _s) { return float4(_a.x / _s, _a.y / _s, _a.z / _s, _a.w / _s); }
+		friend inline float4 div(float _s, const float4 &_b) { return float4(_s / _b.x, _s / _b.y, _s / _b.z, _s / _b.w); }
+
+		friend inline float dot(const float4 &_a, const float4 &_b) { return _a.x * _b.x + _a.y * _b.y + _a.z * _b.z + _a.w * _b.w; }
+
+		friend inline float length2(const float4 &_v) { return dot(_v, _v); }
+		friend inline float length(const float4 &_v) { return sqrtf(length2(_v)); }
+
+		friend inline float4 normal(const float4 &_v) { return _v / length(_v); }
+
+
+		inline float4 operator - () { return neg(*this); }
+
+		inline float4 operator + (const float4 &_v) const { return add(*this, _v); }
+		inline float4& operator += (const float4 &_v) { return *this = add(*this, _v); }
+		inline float4 operator - (const float4 &_v) const { return sub(*this, _v); }
+		inline float4& operator -= (const float4 &_v) { return *this = sub(*this, _v); }
+		inline float4 operator * (const float4 &_v) const { return mul(*this, _v); }
+		inline float4& operator *= (const float4 &_v) { return *this = mul(*this, _v); }
+		inline float4 operator / (const float4 &_v) const { return div(*this, _v); }
+		inline float4& operator /= (const float4 &_v) { return *this = div(*this, _v); }
+
+		inline float4 operator * (float _s) const { return mul(*this, _s); }
+		inline float4& operator *= (float _s) { return *this = mul(*this, _s); }
+		friend inline float4 operator * (float _s, const float4 &_b) { return mul(_s, _b); }
+		inline float4 operator / (float _s) const { return div(*this, _s); }
+		inline float4& operator /= (float _s) { return *this = div(*this, _s); }
+		friend inline float4 operator / (float _s, const float4 &_b) { return div(_s, _b); }
+
+		inline operator float2 () const { return float2(x, y); }
+		inline operator float3 () const { return float3(x, y, z); }
+	};
+
 }
 
 #endif // __FLOAT2_HPP__
