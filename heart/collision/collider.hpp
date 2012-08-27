@@ -8,6 +8,7 @@ namespace heart
 		struct object
 		{
 		};
+
 	private:
 	};
 }

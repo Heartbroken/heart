@@ -1,4 +1,11 @@
 #################
+## Heart
+#################
+bin
+data
+OGRE
+
+#################
 ## Eclipse
 #################
 
@@ -28,6 +35,10 @@ local.properties
 # PDT-specific
 .buildpath
 
+#################
+## OGRE
+#################
+*.log
 
 #################
 ## Visual Studio

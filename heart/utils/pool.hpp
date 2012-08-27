@@ -27,7 +27,7 @@ namespace heart
 			}
 			item &l_item = m_items[l_index];
 			l_item.v.~_Type(); new(&l_item.v) _Type(_v);
-			l_item.ID = (++m_counter << 16) | (l_index & INDEX_MASK);
+			l_item.ID = ((++m_counter &= INDEX_MASK) << 16) | (l_index & INDEX_MASK);
 			return l_item.ID;
 		}
 		inline bool exists(uint _ID) const
