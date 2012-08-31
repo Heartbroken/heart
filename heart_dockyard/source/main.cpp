@@ -1,36 +1,21 @@
 #include "header.hpp"
 
 // OGRE
-#include "OGRE/include/Ogre.h"
-#include "OGRE/RenderSystems/Direct3D9/include/OgreD3D9Plugin.h"
-#pragma comment(lib, "d3d9")
-#pragma comment(lib, "d3dx9")
-#pragma comment(lib, "dxerr")
-#pragma comment(lib, "dxguid")
+#include <Ogre.h>
 
 #ifndef _DEBUG
-#	pragma comment(lib, "OgreMainStatic.lib")
-#	pragma comment(lib, "RenderSystem_Direct3D9Static.lib")
-#	pragma comment(lib, "FreeImage.lib")
-#	pragma comment(lib, "zlib.lib")
-#	pragma comment(lib, "zziplib.lib")
-#	pragma comment(lib, "freetype2311.lib")
+#	pragma comment(lib, "OgreMain.lib")
+#   define RENDER_SYSTEM "RenderSystem_Direct3D9"
 #else
-#	pragma comment(lib, "OgreMainStatic_d.lib")
-#	pragma comment(lib, "RenderSystem_Direct3D9Static_d.lib")
-#	pragma comment(lib, "FreeImaged.lib")
-#	pragma comment(lib, "zlibd.lib")
-#	pragma comment(lib, "zziplibd.lib")
-#	pragma comment(lib, "freetype2311_d.lib")
+#	pragma comment(lib, "OgreMain_d.lib")
+#   define RENDER_SYSTEM "RenderSystem_Direct3D9_d"
 #endif
-
 
 void test()
 {
 	Ogre::Root* pOgre = new Ogre::Root("", "");
 
-	Ogre::D3D9Plugin* pRenderSystem = new Ogre::D3D9Plugin();
-	pOgre->installPlugin(pRenderSystem);
+    pOgre->loadPlugin(RENDER_SYSTEM);
 	pOgre->setRenderSystem(pOgre->getAvailableRenderers().front());
 
 	pOgre->initialise(false);
@@ -125,7 +110,7 @@ int main(int argc, char **argv)
 	testing::InitGoogleTest(&argc, argv);
 	if (RUN_ALL_TESTS() != 0) return 1;
 
-	//test();
+	test();
 
 	return 0;
 }

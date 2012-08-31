@@ -42,12 +42,16 @@
     <OutDir>$(SolutionDir)..\..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\..\tmp\$(ProjectName) ($(Configuration)!$(Platform))\</IntDir>
     <TargetName>$(ProjectName) ($(Configuration)!$(Platform))</TargetName>
+    <IncludePath>$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\boost;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OGRE_HOME)\lib\debug;$(OGRE_HOME)\boost\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)..\..\bin\</OutDir>
     <IntDir>$(SolutionDir)..\..\tmp\$(ProjectName) ($(Configuration)!$(Platform))\</IntDir>
     <TargetName>$(ProjectName) ($(Configuration)!$(Platform))</TargetName>
+    <IncludePath>$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\boost;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OGRE_HOME)\lib\release;$(OGRE_HOME)\boost\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -55,7 +59,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../../heart;../../source/gtest/include;../../source/gtest;../../source/OGRE/include</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>header.hpp</PrecompiledHeaderFile>
       <AdditionalOptions>-Zm129 %(AdditionalOptions)</AdditionalOptions>
