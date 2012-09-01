@@ -39,6 +39,9 @@
     <ClCompile Include="..\..\source\simulation_utest.cpp">
       <Filter>heart</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\header.cpp">
+      <Filter>header</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\header.hpp">

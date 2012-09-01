@@ -35,8 +35,7 @@ TEST(heart_world, creation_works)
         const sint l_count = 1000;
         for (sint i = 0; i < l_count; ++i)
         {
-            xstr32 l_name; sprintf_s(l_name.str, "Rigidbody %d", i);
-            l_rigidbodies.push_back(l_world.create_rigidbody(l_name));
+            l_rigidbodies.push_back(l_world.create_rigidbody(xname("Rigidbody %d", i)));
         }
         for (sint i = 0; i < l_count; ++i)
         {
@@ -51,21 +50,12 @@ TEST(heart_world, creation_works)
         EXPECT_EQ(l_count / 2, l_rest);
         for (sint i = 0; i < l_count / 2; ++i)
         {
-            xstr32 l_name; sprintf_s(l_name.str, "Rigidbody %d", l_count + i);
-            l_rigidbodies.push_back(l_world.create_rigidbody(l_name));
+            l_rigidbodies.push_back(l_world.create_rigidbody(xname("Rigidbody %d", l_count + i)));
         }
         for (sint i = 0; i < l_count; ++i)
         {
             EXPECT_TRUE(l_rigidbodies[i].valid());
         }
-	}
-	// Shape
-	{
-        world l_world("Test world");
-        shape l_shape = l_world.create_shape("Test shape");
-        EXPECT_TRUE(l_shape.valid());
-        l_shape.destroy();
-        EXPECT_FALSE(l_shape.valid());
 	}
 }
 
@@ -100,8 +90,7 @@ TEST(heart_rigidbody, functions_work)
         const sint l_count = 1000;
         for (sint i = 0; i < l_count; ++i)
         {
-            xstr32 l_name; sprintf_s(l_name.str, "Shape %d", i);
-            l_shapes.push_back(l_rigidbody.create_shape(l_name));
+            l_shapes.push_back(l_rigidbody.create_shape(xname("Shape %d", i)));
         }
         for (sint i = 0; i < l_count; ++i)
         {
@@ -122,12 +111,60 @@ TEST(heart_rigidbody, functions_work)
         EXPECT_EQ(l_enum, l_rest);
         for (sint i = 0; i < l_count / 2; ++i)
         {
-            xstr32 l_name; sprintf_s(l_name.str, "Shape %d", l_count + i);
-            l_shapes.push_back(l_rigidbody.create_shape(l_name));
+            l_shapes.push_back(l_rigidbody.create_shape(xname("Shape %d", l_count + i)));
         }
         for (sint i = 0; i < l_count; ++i)
         {
             EXPECT_TRUE(l_shapes[i].valid());
+        }
+    }
+	// Rigidbody joint
+	{
+        world l_world("Test world");
+        rigidbody l_rigidbody = l_world.create_rigidbody("Test rigidbody");
+        joint l_joint = l_rigidbody.create_joint("Test joint");
+        EXPECT_TRUE(l_joint.valid());
+        l_joint.destroy();
+        EXPECT_FALSE(l_joint.valid());
+        l_joint = l_rigidbody.create_joint("Test joint");
+        EXPECT_TRUE(l_joint.valid());
+        l_rigidbody.destroy();
+        EXPECT_FALSE(l_joint.valid());
+	}
+	// Rigidbody many joints
+	{
+        world l_world("Test world");
+        rigidbody l_rigidbody = l_world.create_rigidbody("Test rigidbody");
+        std::vector<joint> l_joints;
+        const sint l_count = 1000;
+        for (sint i = 0; i < l_count; ++i)
+        {
+            l_joints.push_back(l_rigidbody.create_joint(xname("Joint %d", i)));
+        }
+        for (sint i = 0; i < l_count; ++i)
+        {
+            if (i % 2) l_joints[i].destroy();
+        }
+        uint l_rest = 0;
+        for (sint i = l_count - 1; i >= 0; --i)
+        {
+            if (!l_joints[i].valid()) l_joints.erase(l_joints.begin() + i);
+            else ++l_rest;
+        }
+        EXPECT_EQ(l_count / 2, l_rest);
+        uint l_enum = 0;
+        for (joint s = l_rigidbody.first_joint(); s.valid(); s = s.next_joint())
+        {
+            ++l_enum;
+        }
+        EXPECT_EQ(l_enum, l_rest);
+        for (sint i = 0; i < l_count / 2; ++i)
+        {
+            l_joints.push_back(l_rigidbody.create_joint(xname("Joint %d", l_count + i)));
+        }
+        for (sint i = 0; i < l_count; ++i)
+        {
+            EXPECT_TRUE(l_joints[i].valid());
         }
     }
 }
@@ -146,5 +183,22 @@ TEST(heart_shape, functions_work)
         EXPECT_STREQ("Test shape", l_shape.name());
         l_rigidbody.destroy();
         EXPECT_STREQ("", l_shape.name());
+	}
+}
+
+TEST(heart_joint, functions_work)
+{
+	// Rigidbody joint name
+	{
+        world l_world("Test world");
+        rigidbody l_rigidbody = l_world.create_rigidbody("Test rigidbody");
+        joint l_joint = l_rigidbody.create_joint("Test joint");
+        EXPECT_STREQ("Test joint", l_joint.name());
+        l_joint.destroy();
+        EXPECT_STREQ("", l_joint.name());
+        l_joint = l_rigidbody.create_joint("Test joint");
+        EXPECT_STREQ("Test joint", l_joint.name());
+        l_rigidbody.destroy();
+        EXPECT_STREQ("", l_joint.name());
 	}
 }

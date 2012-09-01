@@ -1,20 +1,5 @@
 #include "header.hpp"
 
-// OGRE
-#include <Ogre.h>
-
-#ifndef RENDER_API
-#   define RENDER_API "Direct3D9" // "Direct3D9" // "GL"
-#endif
-
-#ifndef _DEBUG
-#	pragma comment(lib, "OgreMain.lib")
-#   define RENDER_SYSTEM "RenderSystem_"RENDER_API
-#else
-#	pragma comment(lib, "OgreMain_d.lib")
-#   define RENDER_SYSTEM "RenderSystem_"RENDER_API"_d"
-#endif
-
 void test()
 {
 	Ogre::Root* pOgre = new Ogre::Root("", "");
@@ -35,7 +20,7 @@ void test()
 
 	Ogre::Camera* pCamera = pSceneManager->createCamera("Camera");
 	pCamera->setFixedYawAxis(true, Ogre::Vector3::UNIT_Z);
-	pCamera->setPosition(Ogre::Vector3(0.0f, 50.0f, 20.0f)); 
+	pCamera->setPosition(Ogre::Vector3(0.0f, 50.0f, 20.0f));
 	pCamera->lookAt(Ogre::Vector3(0.0f, 0.0f, 0.0f)); 
 	pCamera->setNearClipDistance(0.1f);
 	pCamera->setFarClipDistance(100.0f);
@@ -112,7 +97,7 @@ int main(int argc, char **argv)
 	testing::InitGoogleTest(&argc, argv);
 	if (RUN_ALL_TESTS() != 0) return 1;
 
-	test();
+	//test();
 
 	return 0;
 }
