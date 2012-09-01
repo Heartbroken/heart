@@ -48,11 +48,10 @@ namespace heart
         inline rigidbody();
         inline rigidbody(const rigidbody &_b);
         inline rigidbody& operator = (const rigidbody &_b);
-        inline shape create_shape(const xname &_name, const real4x4 &_transform = r4x4_1, real _friction = 0.5f, real _bouncing = 0.0f, real _density = 1.0f) const;
+        inline shape create_shape(const xname &_name = xname_0, const real4x4 &_transform = r4x4_1, real _friction = 0.5f, real _bouncing = 0.0f, real _density = 1.0f) const;
         inline shape first_shape() const;
-        inline joint create_joint(char* _name, const real4x4 &_transform = r4x4_1);
+        inline joint create_joint(const xname &_name = xname_0, const real4x4 &_transform = r4x4_1);
         inline joint first_joint() const;
-
         inline bool valid() const;
         inline const xname& name() const;
         inline void destroy();
@@ -69,9 +68,9 @@ namespace heart
     {
         inline world(const xname &_name = xname_0);
 
-        inline const xname& name() const { return m_name; }
+        inline const xname& name() const;
 
-        inline rigidbody create_rigidbody(const xname &_name, const real4x4 &_transform = r4x4_1);
+        inline rigidbody create_rigidbody(const xname &_name = xname_0, const real4x4 &_transform = r4x4_1);
 
     private:
         xname m_name;
@@ -79,8 +78,7 @@ namespace heart
         friend shape;
         struct _shape
         {
-            xname name;
-            real4x4 transform;
+            xname name; real4x4 transform;
             real friction, bouncing, density;
             uint rigidbody_ID, next_shape_ID;
         };
@@ -92,8 +90,7 @@ namespace heart
         friend joint;
         struct _joint
         {
-            xname name;
-            real4x4 transform;
+            xname name; real4x4 transform;
             uint rigidbody_ID, next_joint_ID;
         };
         pool_<_joint> m_joints;
@@ -233,7 +230,7 @@ namespace heart
     {
         return valid() ? m_world.first_rigidbody_shape(m_ID) : shape();
     }
-    inline joint rigidbody::create_joint(char* _name, const real4x4 &_transform)
+    inline joint rigidbody::create_joint(const xname &_name, const real4x4 &_transform)
     {
         return valid() ? m_world.create_rigidbody_joint(m_ID, _name, _transform) : joint();
     }
@@ -253,6 +250,10 @@ namespace heart
     :
         m_name(_name)
     {}
+    inline const xname& world::name() const
+    {
+        return m_name;
+    }
     inline bool world::shape_is_valid(uint _ID) const
     {
         return m_shapes.exists(_ID);

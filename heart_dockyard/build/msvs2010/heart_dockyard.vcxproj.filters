@@ -42,6 +42,9 @@
     <ClCompile Include="..\..\source\header.cpp">
       <Filter>header</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\xstr_utest.cpp">
+      <Filter>heart\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\header.hpp">
@@ -72,6 +75,9 @@
       <Filter>heart</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\heart\utils\pool.hpp">
+      <Filter>heart\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\utils\xstr.hpp">
       <Filter>heart\utils</Filter>
     </ClInclude>
   </ItemGroup>

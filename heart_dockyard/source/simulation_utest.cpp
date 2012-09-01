@@ -153,7 +153,7 @@ TEST(heart_rigidbody, functions_work)
         }
         EXPECT_EQ(l_count / 2, l_rest);
         uint l_enum = 0;
-        for (joint s = l_rigidbody.first_joint(); s.valid(); s = s.next_joint())
+        for (joint j = l_rigidbody.first_joint(); j.valid(); j = j.next_joint())
         {
             ++l_enum;
         }

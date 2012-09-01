@@ -116,6 +116,7 @@ xcopy $(OGRE_HOME)\bin\release\RenderSystem_GL.dll $(SolutionDir)..\..\bin /Y</C
     </ClCompile>
     <ClCompile Include="..\..\source\main.cpp" />
     <ClCompile Include="..\..\source\simulation_utest.cpp" />
+    <ClCompile Include="..\..\source\xstr_utest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\heart\collision.hpp" />
@@ -127,6 +128,7 @@ xcopy $(OGRE_HOME)\bin\release\RenderSystem_GL.dll $(SolutionDir)..\..\bin /Y</C
     <ClInclude Include="..\..\..\heart\types.hpp" />
     <ClInclude Include="..\..\..\heart\utils.hpp" />
     <ClInclude Include="..\..\..\heart\utils\pool.hpp" />
+    <ClInclude Include="..\..\..\heart\utils\xstr.hpp" />
     <ClInclude Include="..\..\source\header.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
