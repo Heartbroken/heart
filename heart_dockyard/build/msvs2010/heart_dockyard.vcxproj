@@ -58,8 +58,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../heart;../../source/gtest/include;../../source/gtest;../../source/OGRE/include</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>../../../heart;../../source/gtest/include;../../source/gtest</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>header.hpp</PrecompiledHeaderFile>
       <AdditionalOptions>-Zm129 %(AdditionalOptions)</AdditionalOptions>
@@ -67,27 +66,40 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../source/OGRE/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy $(OGRE_HOME)\bin\debug\OgreMain_d.dll $(SolutionDir)..\..\bin /Y
+xcopy $(OGRE_HOME)\bin\debug\RenderSystem_Direct3D9_d.dll $(SolutionDir)..\..\bin /Y
+xcopy $(OGRE_HOME)\bin\debug\RenderSystem_GL_d.dll $(SolutionDir)..\..\bin /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../heart;../../source/gtest/include;../../source/gtest;../../source/OGRE/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../heart;../../source/gtest/include;../../source/gtest</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>header.hpp</PrecompiledHeaderFile>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>../../source/OGRE/lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>OgreMain.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy $(OGRE_HOME)\bin\release\OgreMain.dll $(SolutionDir)..\..\bin /Y
+xcopy $(OGRE_HOME)\bin\release\RenderSystem_Direct3D9.dll $(SolutionDir)..\..\bin /Y
+xcopy $(OGRE_HOME)\bin\release\RenderSystem_GL.dll $(SolutionDir)..\..\bin /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\pool_utest.cpp" />

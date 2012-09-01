@@ -37,18 +37,16 @@ void test()
 	pCamera->setFixedYawAxis(true, Ogre::Vector3::UNIT_Z);
 	pCamera->setPosition(Ogre::Vector3(0.0f, 50.0f, 20.0f)); 
 	pCamera->lookAt(Ogre::Vector3(0.0f, 0.0f, 0.0f)); 
-	pCamera->setNearClipDistance(0.1f); 
+	pCamera->setNearClipDistance(0.1f);
 	pCamera->setFarClipDistance(100.0f);
 	Ogre::Viewport* pViewport = pWindow->addViewport(pCamera);
 	pViewport->setBackgroundColour(Ogre::ColourValue(0.0f, 0.0f, 0.0f));
 	pCamera->setAspectRatio(Ogre::Real(pViewport->getActualWidth()) / Ogre::Real(pViewport->getActualHeight()));
 
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("../data/materials/scripts", "FileSystem", "Test");
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("../data/materials/programs", "FileSystem", "Test");
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("../data/materials/textures", "FileSystem", "Test");
+	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("../data/dockyard.zip", "Zip", "Dockyard", true);
 	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
-	Ogre::MeshManager::getSingleton().createPlane("GroundPlane", "Test", Ogre::Plane(0.0f, 0.0f, 1.0f, 0.0f), 100.0f, 100.0f, 100, 100, true, 1, 3.0f, 3.0f);
+	Ogre::MeshManager::getSingleton().createPlane("GroundPlane", "Dockyard", Ogre::Plane(0.0f, 0.0f, 1.0f, 0.0f), 100.0f, 100.0f, 100, 100, true, 1, 3.0f, 3.0f);
 	Ogre::Entity* pGroundEntity = pSceneManager->createEntity("GroundPlane");
 	pGroundEntity->setMaterialName("Examples/Rockwall");
 	pGroundEntity->setCastShadows(false);
