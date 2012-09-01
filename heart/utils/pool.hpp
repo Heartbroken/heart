@@ -37,6 +37,14 @@ namespace heart
 			if (m_items[l_index].ID != _ID) return false;
 			return true;
 		}
+		inline const type& get(uint _ID) const
+		{
+			return m_items[_ID & INDEX_MASK].v;
+		}
+		inline type& get(uint _ID)
+		{
+			return m_items[_ID & INDEX_MASK].v;
+		}
 		inline void remove(uint _ID)
 		{
 			if (exists(_ID))
@@ -53,11 +61,11 @@ namespace heart
 		}
 		inline const type& operator [] (uint _ID) const
 		{
-			return m_items[_ID & INDEX_MASK].v;
+			return get(_ID);
 		}
 		inline type& operator [] (uint _ID)
 		{
-			return m_items[_ID & INDEX_MASK].v;
+			return get(_ID);
 		}
 		inline uint first_ID() const
 		{

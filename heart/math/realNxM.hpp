@@ -26,7 +26,14 @@ namespace heart
 	struct real4x4
 	{
 		real4 x, y, z, w;
+
+		inline real4x4() {}
+		inline real4x4(const real4 _x, const real4 _y, const real4 _z, const real4 _w) : x(_x), y(_y), z(_z), w(_w) {}
+		inline real4x4(const real4x4 &_m) : x(_m.x), y(_m.y), z(_m.z), w(_m.w) {}
 	};
+
+	static const real4x4 r4x4_0(r4_0, r4_0, r4_0, r4_0);
+	static const real4x4 r4x4_1(r4_x, r4_y, r4_z, r4_w);
 }
 
 #endif // __REALNXM_HPP__

@@ -62,6 +62,11 @@ namespace heart
 		inline bool operator != (const real2 &_v) const { return x != _v.x || y != _v.y; }
 	};
 
+	static const real2 r2_0(0.0f, 0.0f);
+	static const real2 r2_1(1.0f, 1.0f);
+	static const real2 r2_x(1.0f, 0.0f);
+	static const real2 r2_y(0.0f, 1.0f);
+
 	struct real3
 	{
 		real x, y, z;
@@ -121,6 +126,12 @@ namespace heart
 		inline bool operator != (const real3 &_v) const { return x != _v.x || y != _v.y || z != _v.z; }
 	};
 
+	static const real3 r3_0(0.0f, 0.0f, 0.0f);
+	static const real3 r3_1(1.0f, 1.0f, 1.0f);
+	static const real3 r3_x(1.0f, 0.0f, 0.0f);
+	static const real3 r3_y(0.0f, 1.0f, 0.0f);
+	static const real3 r3_z(0.0f, 0.0f, 1.0f);
+
 	struct real4
 	{
 		real x, y, z, w;
@@ -178,6 +189,13 @@ namespace heart
 		inline bool operator == (const real4 &_v) const { return x == _v.x && y == _v.y && z == _v.z && w == _v.w; }
 		inline bool operator != (const real4 &_v) const { return x != _v.x || y != _v.y || z != _v.z || w != _v.w; }
 	};
+
+	static const real4 r4_0(0.0f, 0.0f, 0.0f, 0.0f);
+	static const real4 r4_1(1.0f, 1.0f, 1.0f, 1.0f);
+	static const real4 r4_x(1.0f, 0.0f, 0.0f, 0.0f);
+	static const real4 r4_y(0.0f, 1.0f, 0.0f, 0.0f);
+	static const real4 r4_z(0.0f, 0.0f, 1.0f, 0.0f);
+	static const real4 r4_w(0.0f, 0.0f, 0.0f, 1.0f);
 
 }
 

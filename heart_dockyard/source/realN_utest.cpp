@@ -189,6 +189,14 @@ TEST(heart_real2, operators_work)
 	}
 }
 
+TEST(heart_real2, constants_valid)
+{
+	EXPECT_EQ(r2_0, real2(0.0f, 0.0f));
+	EXPECT_EQ(r2_1, real2(1.0f, 1.0f));
+	EXPECT_EQ(r2_x, real2(1.0f, 0.0f));
+	EXPECT_EQ(r2_y, real2(0.0f, 1.0f));
+}
+
 // real3
 
 TEST(heart_real3, constructors_work)
@@ -375,6 +383,14 @@ TEST(heart_real3, operators_work)
 	}
 }
 
+TEST(heart_real3, constants_valid)
+{
+	EXPECT_EQ(r3_0, real3(0.0f, 0.0f, 0.0f));
+	EXPECT_EQ(r3_1, real3(1.0f, 1.0f, 1.0f));
+	EXPECT_EQ(r3_x, real3(1.0f, 0.0f, 0.0f));
+	EXPECT_EQ(r3_y, real3(0.0f, 1.0f, 0.0f));
+	EXPECT_EQ(r3_z, real3(0.0f, 0.0f, 1.0f));
+}
 
 // real4
 
@@ -561,4 +577,14 @@ TEST(heart_real4, operators_work)
 		real4 l_v0(1.0f, 2.0f, 3.0f, 4.0f), l_v1(5.0f, 6.0f, 7.0f, 8.0f), l_v2(l_v0);
 		EXPECT_TRUE(l_v0 != l_v1); EXPECT_TRUE(l_v0 == l_v2);
 	}
+}
+
+TEST(heart_real4, constants_valid)
+{
+	EXPECT_EQ(r4_0, real4(0.0f, 0.0f, 0.0f, 0.0f));
+	EXPECT_EQ(r4_1, real4(1.0f, 1.0f, 1.0f, 1.0f));
+	EXPECT_EQ(r4_x, real4(1.0f, 0.0f, 0.0f, 0.0f));
+	EXPECT_EQ(r4_y, real4(0.0f, 1.0f, 0.0f, 0.0f));
+	EXPECT_EQ(r4_z, real4(0.0f, 0.0f, 1.0f, 0.0f));
+	EXPECT_EQ(r4_w, real4(0.0f, 0.0f, 0.0f, 1.0f));
 }
