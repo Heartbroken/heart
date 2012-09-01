@@ -19,6 +19,9 @@
     <Filter Include="heart\utils">
       <UniqueIdentifier>{cca9f146-25c0-4a28-b106-925f9cced0b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="heart\simulation">
+      <UniqueIdentifier>{f5c6b0c5-1773-4c06-91fe-08c8ef59e9c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\main.cpp">
@@ -36,14 +39,14 @@
     <ClCompile Include="..\..\source\pool_utest.cpp">
       <Filter>heart\utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\simulation_utest.cpp">
-      <Filter>heart</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\header.cpp">
       <Filter>header</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\xstr_utest.cpp">
       <Filter>heart\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\simulation_utest.cpp">
+      <Filter>heart\simulation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,9 +71,6 @@
     <ClInclude Include="..\..\..\heart\math\realNxM.hpp">
       <Filter>heart\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\heart\simulation.hpp">
-      <Filter>heart</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\heart\utils.hpp">
       <Filter>heart</Filter>
     </ClInclude>
@@ -79,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\heart\utils\xstr.hpp">
       <Filter>heart\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\heart\simulation.hpp">
+      <Filter>heart\simulation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

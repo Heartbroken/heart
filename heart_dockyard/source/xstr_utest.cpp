@@ -10,6 +10,8 @@ TEST(heart_xstr, constructors_work)
     EXPECT_STREQ("Str 2", l_str2);
     xstr_<20> l_str3(l_str2);
     EXPECT_STREQ("Str 2", l_str3);
+    xstr_<5> l_str4("1234567890");
+    EXPECT_STREQ("12345", l_str4);
 }
 
 TEST(heart_xstr, operators_work)
