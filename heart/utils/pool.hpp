@@ -90,6 +90,10 @@ namespace heart
 			}
 			return BAD_ID;
 		}
+        inline uint count() const
+        {
+            return m_items.size() - m_free.size();
+        }
 	private:
 		static const uint INDEX_MASK = 0xffff;
 		struct item { uint ID; type v; };
