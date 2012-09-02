@@ -18,7 +18,7 @@ TEST(heart_world, constructors_work)
 	}
 }
 
-TEST(heart_world, creation_works)
+TEST(heart_world, functions_work)
 {
 	// Rigidbody
 	{

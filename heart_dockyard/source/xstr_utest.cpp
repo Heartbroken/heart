@@ -28,4 +28,11 @@ TEST(heart_xstr, operators_work)
     EXPECT_STREQ("Str 1", l_str);
     const char* l_cstr = l_str2;
     EXPECT_STREQ("Str 2", l_cstr);
+    xstr_<20> l_str3 = l_str1;
+    EXPECT_TRUE(l_str1 == "Str 1");
+    EXPECT_TRUE(l_str2 != "Str 1");
+    EXPECT_TRUE(l_str1 == l_str3);
+    EXPECT_TRUE(l_str2 != l_str1);
+    EXPECT_FALSE("Str 2" == l_str1);
+    EXPECT_FALSE("Str 1" != l_str1);
 }
