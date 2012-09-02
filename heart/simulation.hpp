@@ -3,6 +3,7 @@
 
 namespace heart
 {
+    struct rigidbody;
     struct world;
 
     /* Shape handle
@@ -12,9 +13,10 @@ namespace heart
         inline shape();
         inline shape(const shape &_s);
         inline shape& operator = (const shape &_s);
+        inline bool operator == (const shape &_s) const;
         inline bool valid() const;
         inline const xname& name() const;
-        inline shape next_shape() const;
+        inline rigidbody get_rigidbody() const;
         inline void destroy();
 
     private:
@@ -30,9 +32,10 @@ namespace heart
         inline joint();
         inline joint(const joint &_j);
         inline joint& operator = (const joint &_j);
+        inline bool operator == (const joint &_j) const;
         inline bool valid() const;
         inline const xname& name() const;
-        inline joint next_joint() const;
+        inline rigidbody get_rigidbody() const;
         inline void destroy();
 
     private:
@@ -46,12 +49,15 @@ namespace heart
     struct rigidbody
     {
         inline rigidbody();
-        inline rigidbody(const rigidbody &_b);
-        inline rigidbody& operator = (const rigidbody &_b);
+        inline rigidbody(const rigidbody &_r);
+        inline rigidbody& operator = (const rigidbody &_r);
+        inline bool operator == (const rigidbody &_r) const;
         inline shape create_shape(const xname &_name = xname_0, const real4x4 &_transform = r4x4_1, real _friction = 0.5f, real _bouncing = 0.0f, real _density = 1.0f) const;
         inline shape first_shape() const;
+        inline shape next_shape(const shape &_s) const;
         inline joint create_joint(const xname &_name = xname_0, const real4x4 &_transform = r4x4_1);
         inline joint first_joint() const;
+        inline joint next_joint(const joint &_joint) const;
         inline bool valid() const;
         inline const xname& name() const;
         inline void destroy();
@@ -85,7 +91,7 @@ namespace heart
         pool_<_shape> m_shapes;
         inline bool shape_is_valid(uint _ID) const;
         inline const xname& get_shape_name(uint _ID) const;
-        inline shape next_rigidbody_shape(uint _shape_ID);
+        inline rigidbody get_shape_rigidbody(uint _ID);
 
         friend joint;
         struct _joint
@@ -96,7 +102,7 @@ namespace heart
         pool_<_joint> m_joints;
         inline bool joint_is_valid(uint _ID) const;
         inline const xname& get_joint_name(uint _ID) const;
-        inline joint next_rigidbody_joint(uint _joint_ID);
+        inline rigidbody get_joint_rigidbody(uint _ID);
 
         friend rigidbody;
         struct _rigidbody
@@ -111,9 +117,11 @@ namespace heart
         inline const xname& get_rigidbody_name(uint _ID) const;
         inline shape create_rigidbody_shape(uint _rigidbody_ID, const xname &_name, const real4x4 &_transform, real _friction, real _bouncing, real _density);
         inline shape first_rigidbody_shape(uint _rigidbody_ID);
+        inline shape next_rigidbody_shape(const shape &_s);
         inline void destroy_rigidbody_shape(uint _shape_ID);
         inline joint create_rigidbody_joint(uint _rigidbody_ID, const xname &_name, const real4x4 &_transform);
         inline joint first_rigidbody_joint(uint _rigidbody_ID);
+        inline joint next_rigidbody_joint(const joint &_j);
         inline void destroy_rigidbody_joint(uint _joint_ID);
         inline void destroy_rigidbody(uint _rigidbody_ID);
 
@@ -142,6 +150,10 @@ namespace heart
     {
         this->~shape(); new(this) shape(_s); return *this;
     }
+    inline bool shape::operator == (const shape &_s) const
+    {
+        return valid() && (&m_world == &_s.m_world) && (m_ID == _s.m_ID);
+    }
     inline bool shape::valid() const
     {
         return &m_world != 0 && m_world.shape_is_valid(m_ID);
@@ -150,9 +162,9 @@ namespace heart
     {
         return valid() ? m_world.get_shape_name(m_ID) : xname_0;
     }
-    inline shape shape::next_shape() const
+    inline rigidbody shape::get_rigidbody() const
     {
-        return valid() ? m_world.next_rigidbody_shape(m_ID) : shape();
+        return valid() ? m_world.get_shape_rigidbody(m_ID) : rigidbody();
     }
     inline void shape::destroy()
     {
@@ -178,6 +190,10 @@ namespace heart
     {
         this->~joint(); new(this) joint(_j); return *this;
     }
+    inline bool joint::operator == (const joint &_j) const
+    {
+        return valid() && (&m_world == &_j.m_world) && (m_ID == _j.m_ID);
+    }
     inline bool joint::valid() const
     {
         return &m_world != 0 && m_world.joint_is_valid(m_ID);
@@ -186,9 +202,9 @@ namespace heart
     {
         return valid() ? m_world.get_joint_name(m_ID) : xname_0;
     }
-    inline joint joint::next_joint() const
+    inline rigidbody joint::get_rigidbody() const
     {
-        return valid() ? m_world.next_rigidbody_joint(m_ID) : joint();
+        return valid() ? m_world.get_joint_rigidbody(m_ID) : rigidbody();
     }
     inline void joint::destroy()
     {
@@ -214,6 +230,10 @@ namespace heart
     {
         this->~rigidbody(); new(this) rigidbody(_b); return *this;
     }
+    inline bool rigidbody::operator == (const rigidbody &_r) const
+    {
+        return valid() && (&m_world == &_r.m_world) && (m_ID == _r.m_ID);
+    }
     inline bool rigidbody::valid() const
     {
         return &m_world != 0 && m_world.rigidbody_is_valid(m_ID);
@@ -230,6 +250,10 @@ namespace heart
     {
         return valid() ? m_world.first_rigidbody_shape(m_ID) : shape();
     }
+    inline shape rigidbody::next_shape(const shape &_s) const
+    {
+        return (_s.get_rigidbody() == *this) ? m_world.next_rigidbody_shape(_s) : shape();
+    }
     inline joint rigidbody::create_joint(const xname &_name, const real4x4 &_transform)
     {
         return valid() ? m_world.create_rigidbody_joint(m_ID, _name, _transform) : joint();
@@ -237,6 +261,10 @@ namespace heart
     inline joint rigidbody::first_joint() const
     {
         return valid() ? m_world.first_rigidbody_joint(m_ID) : joint();
+    }
+    inline joint rigidbody::next_joint(const joint &_j) const
+    {
+        return (_j.get_rigidbody() == *this) ? m_world.next_rigidbody_joint(_j) : joint();
     }
     inline void rigidbody::destroy()
     {
@@ -262,6 +290,10 @@ namespace heart
     {
         return m_shapes.get(_ID).name;
     };
+    inline rigidbody world::get_shape_rigidbody(uint _ID)
+    {
+        return rigidbody(*this, m_shapes.get(_ID).rigidbody_ID);
+    }
     inline bool world::joint_is_valid(uint _ID) const
     {
         return m_joints.exists(_ID);
@@ -269,6 +301,10 @@ namespace heart
     inline const xname& world::get_joint_name(uint _ID) const
     {
         return m_joints.get(_ID).name;
+    }
+    inline rigidbody world::get_joint_rigidbody(uint _ID)
+    {
+        return rigidbody(*this, m_joints.get(_ID).rigidbody_ID);
     }
     rigidbody world::create_rigidbody(const xname &_name, const real4x4 &_transform)
     {
@@ -311,9 +347,9 @@ namespace heart
     {
         return shape(*this, m_rigidbodys.get(_rigidbody_ID).first_shape_ID);
     }
-    inline shape world::next_rigidbody_shape(uint _shape_ID)
+    inline shape world::next_rigidbody_shape(const shape &_s)
     {
-        return shape(*this, m_shapes.get(_shape_ID).next_shape_ID);
+        return shape(*this, m_shapes.get(_s.m_ID).next_shape_ID);
     }
     inline void world::destroy_rigidbody_shape(uint _shape_ID)
     {
@@ -358,9 +394,9 @@ namespace heart
     {
         return joint(*this, m_rigidbodys.get(_rigidbody_ID).first_joint_ID);
     }
-    inline joint world::next_rigidbody_joint(uint _joint_ID)
+    inline joint world::next_rigidbody_joint(const joint &_j)
     {
-        return joint(*this, m_joints.get(_joint_ID).next_joint_ID);
+        return joint(*this, m_joints.get(_j.m_ID).next_joint_ID);
     }
     inline void world::destroy_rigidbody_joint(uint _joint_ID)
     {
