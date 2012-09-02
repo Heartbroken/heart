@@ -154,6 +154,8 @@ TEST(heart_world, functions_work)
             uint l_count = 0;
             for (shape s = l_world.first_shape(); s.valid(); s = l_world.next_shape(s))
             {
+                EXPECT_TRUE(s.get_rigid().valid() || s.get_field().valid());
+                EXPECT_FALSE(s.get_rigid().valid() && s.get_field().valid());
                 ++l_count;
             }
             EXPECT_EQ(l_rigids_count * l_shapes_count + l_fields_count * l_shapes_count, l_count);
