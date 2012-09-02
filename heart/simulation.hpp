@@ -3,8 +3,9 @@
 
 namespace heart
 {
-    struct rigid;
     struct world;
+    struct rigid;
+    struct field;
 
     /* Shape handle
      */
@@ -17,6 +18,7 @@ namespace heart
         inline bool valid() const;
         inline const xname& name() const;
         inline rigid get_rigid() const;
+        inline field get_field() const;
         inline void destroy();
 
     private:
@@ -44,7 +46,7 @@ namespace heart
         inline joint(world &_world, uint _ID);
     };
 
-    /* rigid handle
+    /* Rigid handle
      */
     struct rigid
     {
@@ -70,6 +72,28 @@ namespace heart
         inline rigid(world &_world, uint _ID);
     };
 
+    /* Field handle
+     */
+    struct field
+    {
+        inline field();
+        inline field(const field &_f);
+        inline field& operator = (const field &_f);
+        inline bool operator == (const field &_f) const;
+        inline shape create_shape(const xname &_name = xname_0, const real4x4 &_transform = r4x4_1) const;
+        inline uint shapes_count() const;
+        inline shape first_shape() const;
+        inline shape next_shape(const shape &_s) const;
+        inline bool valid() const;
+        inline const xname& name() const;
+        inline void destroy();
+
+    private:
+        friend world;
+        world &m_world; uint m_ID;
+        inline field(world &_world, uint _ID);
+    };
+
     /* World - the root simulation class
      */
     struct world
@@ -79,6 +103,7 @@ namespace heart
         inline const xname& name() const;
 
         inline rigid create_rigid(const xname &_name = xname_0, const real4x4 &_transform = r4x4_1);
+        inline field create_field(const xname &_name = xname_0, const real4x4 &_transform = r4x4_1);
 
         inline uint shapes_count() const;
         inline shape first_shape();
@@ -89,6 +114,9 @@ namespace heart
         inline uint rigids_count() const;
         inline rigid first_rigid();
         inline rigid next_rigid(const rigid &_r);
+        inline uint fields_count() const;
+        inline field first_field();
+        inline field next_field(const field &_f);
 
     private:
         xname m_name;
@@ -98,12 +126,13 @@ namespace heart
         {
             xname name; real4x4 transform;
             real friction, bouncing, density;
-            uint rigid_ID, next_shape_ID;
+            uint rigid_ID, field_ID, next_shape_ID;
         };
         pool_<_shape> m_shapes;
         inline bool shape_is_valid(uint _ID) const;
         inline const xname& get_shape_name(uint _ID) const;
         inline rigid get_shape_rigid(uint _ID);
+        inline field get_shape_field(uint _ID);
 
         friend joint;
         struct _joint
@@ -140,9 +169,21 @@ namespace heart
         inline void destroy_rigid_joint(uint _joint_ID);
         inline void destroy_rigid(uint _rigid_ID);
 
-        struct _staticrigid
+        friend field;
+        struct _field
         {
+            xname name; real4x4 transform;
+            uint first_shape_ID, shapes_count;
         };
+        pool_<_field> m_fields;
+        inline bool field_is_valid(uint _ID) const;
+        inline const xname& get_field_name(uint _ID) const;
+        inline shape create_field_shape(uint _field_ID, const xname &_name, const real4x4 &_transform);
+        inline uint field_shapes_count(uint _field_ID) const;
+        inline shape first_field_shape(uint _field_ID);
+        inline shape next_field_shape(const shape &_s);
+        inline void destroy_field_shape(uint _shape_ID);
+        inline void destroy_field(uint _field_ID);
     };
 
     // Inlines
@@ -181,9 +222,17 @@ namespace heart
     {
         return valid() ? m_world.get_shape_rigid(m_ID) : rigid();
     }
+    inline field shape::get_field() const
+    {
+        return valid() ? m_world.get_shape_field(m_ID) : field();
+    }
     inline void shape::destroy()
     {
-        if (valid()) m_world.destroy_rigid_shape(m_ID);
+        if (valid())
+        {
+            if (get_rigid().valid()) m_world.destroy_rigid_shape(m_ID);
+            if (get_field().valid()) m_world.destroy_field_shape(m_ID);
+        }
         m_ID = BAD_ID;
     }
 
@@ -237,13 +286,13 @@ namespace heart
     :
         m_world(_world), m_ID(_ID)
     {}
-    inline rigid::rigid(const rigid &_b)
+    inline rigid::rigid(const rigid &_r)
     :
-        m_world(_b.m_world), m_ID(_b.m_ID)
+        m_world(_r.m_world), m_ID(_r.m_ID)
     {}
-    inline rigid& rigid::operator = (const rigid &_b)
+    inline rigid& rigid::operator = (const rigid &_r)
     {
-        this->~rigid(); new(this) rigid(_b); return *this;
+        this->~rigid(); new(this) rigid(_r); return *this;
     }
     inline bool rigid::operator == (const rigid &_r) const
     {
@@ -295,6 +344,58 @@ namespace heart
         m_ID = BAD_ID;
     }
 
+    // field
+
+    inline field::field()
+    :
+        m_world(*(world*)0), m_ID(BAD_ID)
+    {}
+    inline field::field(world &_world, uint _ID)
+    :
+        m_world(_world), m_ID(_ID)
+    {}
+    inline field::field(const field &_f)
+    :
+        m_world(_f.m_world), m_ID(_f.m_ID)
+    {}
+    inline field& field::operator = (const field &_f)
+    {
+        this->~field(); new(this) field(_f); return *this;
+    }
+    inline bool field::operator == (const field &_f) const
+    {
+        return valid() && (&m_world == &_f.m_world) && (m_ID == _f.m_ID);
+    }
+    inline bool field::valid() const
+    {
+        return &m_world != 0 && m_world.field_is_valid(m_ID);
+    }
+    inline const xname& field::name() const
+    {
+        return valid() ? m_world.get_field_name(m_ID) : xname_0;
+    }
+    inline shape field::create_shape(const xname &_name, const real4x4 &_transform) const
+    {
+        return valid() ? m_world.create_field_shape(m_ID, _name, _transform) : shape();
+    }
+    inline uint field::shapes_count() const
+    {
+        return valid() ? m_world.field_shapes_count(m_ID) : 0;
+    }
+    inline shape field::first_shape() const
+    {
+        return valid() ? m_world.first_field_shape(m_ID) : shape();
+    }
+    inline shape field::next_shape(const shape &_s) const
+    {
+        return (_s.get_field() == *this) ? m_world.next_field_shape(_s) : shape();
+    }
+    inline void field::destroy()
+    {
+        if (valid()) m_world.destroy_field(m_ID);
+        m_ID = BAD_ID;
+    }
+
     // world
 
     inline world::world(const xname &_name)
@@ -316,6 +417,10 @@ namespace heart
     inline rigid world::get_shape_rigid(uint _ID)
     {
         return rigid(*this, m_shapes.get(_ID).rigid_ID);
+    }
+    inline field world::get_shape_field(uint _ID)
+    {
+        return field(*this, m_shapes.get(_ID).field_ID);
     }
     inline bool world::joint_is_valid(uint _ID) const
     {
@@ -373,6 +478,7 @@ namespace heart
         l_shape.bouncing = _bouncing;
         l_shape.density = _density;
         l_shape.rigid_ID = _rigid_ID;
+        l_shape.field_ID = BAD_ID;
 
         _rigid &l_rigid = m_rigids.get(_rigid_ID);
         l_shape.next_shape_ID = l_rigid.first_shape_ID;
@@ -501,6 +607,100 @@ namespace heart
         while (l_rigid.first_shape_ID != BAD_ID) destroy_rigid_shape(l_rigid.first_shape_ID);
         while (l_rigid.first_joint_ID != BAD_ID) destroy_rigid_joint(l_rigid.first_joint_ID);
         m_rigids.remove(_rigid_ID);
+    }
+    field world::create_field(const xname &_name, const real4x4 &_transform)
+    {
+        uint l_field_ID = m_fields.add();
+        _field &l_field = m_fields.get(l_field_ID);
+        l_field.name = _name;
+        l_field.transform = _transform;
+        l_field.first_shape_ID = BAD_ID;
+        l_field.shapes_count = 0;
+        return field(*this, l_field_ID);
+    }
+    inline uint world::fields_count() const
+    {
+        return m_fields.count();
+    }
+    inline field world::first_field()
+    {
+        return field(*this, m_fields.first_ID());
+    }
+    inline field world::next_field(const field &_f)
+    {
+        return field(*this, m_fields.next_ID(_f.m_ID));
+    }
+    inline bool world::field_is_valid(uint _ID) const
+    {
+        return m_fields.exists(_ID);
+    }
+    inline const xname& world::get_field_name(uint _ID) const
+    {
+        return m_fields.get(_ID).name;
+    };
+    inline shape world::create_field_shape(uint _field_ID, const xname &_name, const real4x4 &_transform)
+    {
+        uint l_shape_ID = m_shapes.add();
+
+        _shape &l_shape = m_shapes.get(l_shape_ID);
+        l_shape.name = _name;
+        l_shape.transform = _transform;
+        l_shape.friction = 0;
+        l_shape.bouncing = 0;
+        l_shape.density = 0;
+        l_shape.rigid_ID = BAD_ID;
+        l_shape.field_ID = _field_ID;
+
+        _field &l_field = m_fields.get(_field_ID);
+        l_shape.next_shape_ID = l_field.first_shape_ID;
+        l_field.first_shape_ID = l_shape_ID;
+        ++l_field.shapes_count;
+
+        return shape(*this, l_shape_ID);
+    }
+    inline uint world::field_shapes_count(uint _field_ID) const
+    {
+        return m_fields.get(_field_ID).shapes_count;
+    }
+    inline shape world::first_field_shape(uint _field_ID)
+    {
+        return shape(*this, m_fields.get(_field_ID).first_shape_ID);
+    }
+    inline shape world::next_field_shape(const shape &_s)
+    {
+        return shape(*this, m_shapes.get(_s.m_ID).next_shape_ID);
+    }
+    inline void world::destroy_field_shape(uint _shape_ID)
+    {
+        _shape &l_shape = m_shapes.get(_shape_ID);
+        _field &l_field = m_fields.get(l_shape.field_ID);
+        if (l_field.first_shape_ID == _shape_ID)
+        {
+            l_field.first_shape_ID = l_shape.next_shape_ID;
+        }
+        else
+        {
+            uint l_prev_shape_ID = l_field.first_shape_ID;
+            while (l_prev_shape_ID != BAD_ID)
+            {
+                _shape &l_prev_shape = m_shapes.get(l_prev_shape_ID);
+                if (l_prev_shape.next_shape_ID == _shape_ID)
+                {
+                    l_prev_shape.next_shape_ID = l_shape.next_shape_ID;
+                    break;
+                }
+                l_prev_shape_ID = l_prev_shape.next_shape_ID;
+            }
+        }
+        --l_field.shapes_count;
+        m_shapes.remove(_shape_ID);
+    }
+
+    inline void world::destroy_field(uint _field_ID)
+    {
+        _field &l_field = m_fields.get(_field_ID);
+        while (l_field.first_shape_ID != BAD_ID) destroy_field_shape(l_field.first_shape_ID);
+        m_fields.remove(_field_ID);
     }
 
 }
