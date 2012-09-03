@@ -62,6 +62,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>header.hpp</PrecompiledHeaderFile>
       <AdditionalOptions>-Zm154 %(AdditionalOptions)</AdditionalOptions>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -86,6 +87,7 @@ xcopy $(OGRE_HOME)\bin\debug\RenderSystem_GL_d.dll $(SolutionDir)..\..\bin /Y</C
       <PrecompiledHeaderFile>header.hpp</PrecompiledHeaderFile>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <AdditionalOptions>-Zm154 %(AdditionalOptions)</AdditionalOptions>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
