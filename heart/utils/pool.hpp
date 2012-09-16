@@ -16,6 +16,24 @@ namespace heart
         {
             clear(true);
         }
+        inline pool_(const pool_ &_p)
+        :
+            m_items(0), m_size(_p.m_size), m_count(_p.m_count), m_first_free(_p.m_first_free), m_counter(_p.m_counter)
+        {
+            m_items = (items)realloc(m_items, m_size * sizeof(item));
+            for (uint i = 0; i < m_size; ++i)
+            {
+                m_items[i].ID = _p.m_items[i].ID;
+                if (m_items[i].ID == BAD_ID) m_items[i].next_free = _p.m_items[i].next_free;
+                // ??? If 'type' is std::vector just using the copy constructor throws an exception! Why? (only in the unit test) ???
+                else { new(&m_items[i].data) type(); m_items[i].data = _p.m_items[i].data; }
+            }
+        }
+        inline pool_& operator = (const pool_ &_p)
+        {
+            this->~pool_(); new(this) pool_(_p);
+            return *this;
+        }
 
 		inline uint add(const type &_v = type())
 		{
@@ -25,7 +43,7 @@ namespace heart
             l_index = m_first_free;
             m_first_free = m_items[l_index].next_free;
 			item &l_item = m_items[l_index];
-			new(&l_item.v) _Type(_v);
+			new(&l_item.data) type(_v);
 			l_item.ID = ((++m_counter &= INDEX_MASK) << 16) | (l_index & INDEX_MASK);
 			return l_item.ID;
 		}
@@ -38,11 +56,11 @@ namespace heart
 		}
 		inline const type& get(uint _ID) const
 		{
-			return m_items[_ID & INDEX_MASK].v;
+			return m_items[_ID & INDEX_MASK].data;
 		}
 		inline type& get(uint _ID)
 		{
-			return m_items[_ID & INDEX_MASK].v;
+			return m_items[_ID & INDEX_MASK].data;
 		}
 		inline void remove(uint _ID)
 		{
@@ -51,7 +69,7 @@ namespace heart
                 --m_count;
 				uint l_index = _ID & INDEX_MASK;
 			    item &l_item = m_items[l_index];
-                l_item.v.~_Type();
+                l_item.data.~type();
 				l_item.ID = BAD_ID;
                 l_item.next_free = m_first_free;
                 m_first_free = l_index;
@@ -110,15 +128,13 @@ namespace heart
         }
 
 	private:
-        inline pool_(const pool_&);
-        inline pool_& operator = (const pool_&);
 		static const uint INDEX_MASK = 0xffff;
         struct item
         {
             uint ID;
             union
             {
-                struct { type v; };
+                struct { type data; };
                 uint next_free;
             };
         };

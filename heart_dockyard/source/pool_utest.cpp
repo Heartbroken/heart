@@ -80,5 +80,15 @@ TEST(heart_pool, functions_work)
 			l_val.push_back(i);
 			l_IDs.push_back(l_pool.add(l_val));
 		}
+        pool_<std::vector<uint> > l_pool2(l_pool);
+		for (uint i = 0; i < l_count; ++i)
+		{
+			l_pool2.exists(l_IDs[i]);
+		}
+        pool_<std::vector<uint> > l_pool3; l_pool3 = l_pool2;
+		for (uint i = 0; i < l_count; ++i)
+		{
+			l_pool3.exists(l_IDs[i]);
+		}
 	}
 }
