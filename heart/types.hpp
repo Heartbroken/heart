@@ -12,6 +12,7 @@ namespace heart
 	typedef unsigned short u16;
 	typedef signed char s8;
 	typedef unsigned char u8;
+    typedef void* handle;
 
 	static const uint BAD_ID = uint(-1);
 }
