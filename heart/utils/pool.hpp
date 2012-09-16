@@ -23,10 +23,13 @@ namespace heart
             m_items = (items)realloc(m_items, m_size * sizeof(item));
             for (uint i = 0; i < m_size; ++i)
             {
-                m_items[i].ID = _p.m_items[i].ID;
-                if (m_items[i].ID == BAD_ID) m_items[i].next_free = _p.m_items[i].next_free;
+                item &l_item = m_items[i];
+                const item &l_item0 = _p.m_items[i];
+                l_item.ID = l_item0.ID;
+                if (l_item.ID == BAD_ID) l_item.next_free = l_item0.next_free;
                 // ??? If 'type' is std::vector just using the copy constructor throws an exception! Why? (only in the unit test) ???
-                else { new(&m_items[i].data) type(); m_items[i].data = _p.m_items[i].data; }
+                //else new(&l_item.data) type(l_item0.data);
+                else { new(&l_item.data) type(); l_item.data = l_item0.data; }
             }
         }
         inline pool_& operator = (const pool_ &_p)
