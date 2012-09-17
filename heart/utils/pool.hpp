@@ -20,16 +20,14 @@ namespace heart
         :
             m_items(0), m_size(_p.m_size), m_count(_p.m_count), m_first_free(_p.m_first_free), m_counter(_p.m_counter)
         {
-            m_items = (items)realloc(m_items, m_size * sizeof(item));
+            m_items = (items)malloc(m_size * sizeof(item));
             for (uint i = 0; i < m_size; ++i)
             {
                 item &l_item = m_items[i];
                 const item &l_item0 = _p.m_items[i];
                 l_item.ID = l_item0.ID;
                 if (l_item.ID == BAD_ID) l_item.next_free = l_item0.next_free;
-                // ??? If 'type' is std::vector just using the copy constructor throws an exception! Why? (only in the unit test) ???
-                //else new(&l_item.data) type(l_item0.data);
-                else { new(&l_item.data) type(); l_item.data = l_item0.data; }
+                else new(&l_item.data) type(l_item0.data);
             }
         }
         inline pool_& operator = (const pool_ &_p)
@@ -89,7 +87,8 @@ namespace heart
             }
             if (_free)
             {
-                m_items = (items)realloc(m_items, 0);
+                if (m_items) free(m_items);
+                m_items = 0;
                 m_size = 0;
                 m_first_free = BAD_ID;
             }
@@ -148,7 +147,24 @@ namespace heart
         inline void grow()
         {
             uint l_new_size = m_size ? m_size + (m_size * _Grow / 100) : _Min;
-            m_items = (items)realloc(m_items, l_new_size * sizeof(item));
+            items l_new_items = (items)malloc(l_new_size * sizeof(item));
+            for (uint i = 0; i < m_size; ++i)
+            {
+                item &l_item = m_items[i];
+                item &l_new_item = l_new_items[i];
+                l_new_item.ID = l_item.ID;
+                if (l_new_item.ID == BAD_ID)
+                {
+                    l_new_item.next_free = l_item.next_free;
+                }
+                else
+                {
+                    new(&l_new_item.data) type(l_item.data);
+                    l_item.data.~type();
+                }
+            }
+            if (m_items) free(m_items);
+            m_items = l_new_items;
             for (sint i = l_new_size - 1, s = m_size; i >= s; --i)
             {
                 item &l_item = m_items[i];
